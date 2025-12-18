@@ -20,7 +20,7 @@ app.add_middleware(
 
 
 # middleware exception handler
-app.middleware("http")(catch_exception_middleware)
+app.middleware("https")(catch_exception_middleware)
 
 
 # routers
