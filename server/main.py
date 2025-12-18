@@ -28,13 +28,13 @@ allow_headers=["*"],
 # -----------------------------
 @app.middleware("http")
 async def catch_exception_middleware(request: Request, call_next):
-try:
-return await call_next(request)
-except Exception:
-return JSONResponse(
-status_code=500,
-content={"error": "Internal Server Error"},
-)
+    try:
+        return await call_next(request)
+    except Exception:
+        return JSONResponse(
+        status_code=500,
+            content={"error": "Internal Server Error"},
+                )
 
 
 # -----------------------------
@@ -42,12 +42,12 @@ content={"error": "Internal Server Error"},
 # -----------------------------
 @app.get("/")
 def root():
-return {"status": "Medical Assistant API running"}
+    return {"status": "Medical Assistant API running"}
 
 
 @app.get("/health")
 def health():
-return {"status": "ok"}
+    return {"status": "ok"}
 
 
 # -----------------------------
