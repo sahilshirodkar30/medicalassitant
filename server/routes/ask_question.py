@@ -29,22 +29,22 @@ _pinecone_index = None
 
 
 def get_vector_resources():
-"""Lazy-load heavy resources (Render-safe)"""
-global _embed_model, _pinecone_index
+    """Lazy-load heavy resources (Render-safe)"""
+    global _embed_model, _pinecone_index
 
 
-if _embed_model is None:
-logger.info("Loading SentenceTransformer model")
-_embed_model = SentenceTransformer("all-mpnet-base-v2")
+    if _embed_model is None:
+        logger.info("Loading SentenceTransformer model")
+        _embed_model = SentenceTransformer("all-mpnet-base-v2")
 
 
-if _pinecone_index is None:
-logger.info("Connecting to Pinecone")
-pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-_pinecone_index = pc.Index(os.environ["PINECONE_INDEX_NAME"])
+    if _pinecone_index is None:
+        logger.info("Connecting to Pinecone")
+        pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+        _pinecone_index = pc.Index(os.environ["PINECONE_INDEX_NAME"])
 
 
-return _embed_model, _pinecone_index
+    return _embed_model, _pinecone_index
 
 
 
@@ -53,17 +53,17 @@ return _embed_model, _pinecone_index
 # Simple Retriever (DEFINED ONCE)
 # -----------------------------
 class SimpleRetriever(BaseRetriever):
-tags: Optional[List[str]] = Field(default_factory=list)
-metadata: Optional[dict] = Field(default_factory=dict)
+    tags: Optional[List[str]] = Field(default_factory=list)
+    metadata: Optional[dict] = Field(default_factory=dict)
 
 
 def __init__(self, documents: List[Document]):
-super().__init__()
-self._docs = documents
+    super().__init__()
+    self._docs = documents
 
 
 def _get_relevant_documents(self, query: str) -> List[Document]:
-return self._docs
+    return self._docs
 
 
 
