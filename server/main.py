@@ -1,33 +1,57 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from middelware.exception_handler import catch_exception_middleware
-from routes.upload_files import router as upload_files_router
+from fastapi.responses import JSONResponse
 from routes.ask_question import router as ask_question_router
+from routes.upload_files import router as upload_files_router
 
 
-
-
-app = FastAPI(title="Medical Assistant API",description="Medical Assistant Chatbot")
-
-# cross-origin resource sharing setup
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+app = FastAPI(
+title="Medical Assistant API",
+description="Medical Assistant Chatbot",
 )
 
 
-# middleware exception handler
-app.middleware("https")(catch_exception_middleware)
+# -----------------------------
+# CORS
+# -----------------------------
+app.add_middleware(
+CORSMiddleware,
+allow_origins=["*"],
+allow_credentials=True,
+allow_methods=["*"],
+allow_headers=["*"],
+)
 
 
-# routers
-#1.upload pdf doc
+# -----------------------------
+# Exception Middleware (SAFE)
+# -----------------------------
+@app.middleware("http")
+async def catch_exception_middleware(request: Request, call_next):
+try:
+return await call_next(request)
+except Exception:
+return JSONResponse(
+status_code=500,
+content={"error": "Internal Server Error"},
+)
+
+
+# -----------------------------
+# Health / Root (MANDATORY FOR RENDER)
+# -----------------------------
+@app.get("/")
+def root():
+return {"status": "Medical Assistant API running"}
+
+
+@app.get("/health")
+def health():
+return {"status": "ok"}
+
+
+# -----------------------------
+# Routers
+# -----------------------------
 app.include_router(upload_files_router)
-
-#2.asking queries
-
 app.include_router(ask_question_router)
-
