@@ -32,6 +32,6 @@ tqdm
 # Logging (optional but recommended)
 loguru
 
-
+sentence-transformers
 
 #  uv pip install -r requirements.txt
