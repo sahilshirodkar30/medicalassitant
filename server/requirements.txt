@@ -12,7 +12,7 @@ langchain-core==0.1.23
 langchain-groq
 
 # Vectorstore
-pinecone-client
+pinecone
 
 # Embeddings / LLMs
 langchain-google-genai
